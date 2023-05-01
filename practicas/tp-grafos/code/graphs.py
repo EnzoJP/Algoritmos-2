@@ -234,33 +234,22 @@ def DFS_Visit2(G,V,grayList,whitelist,blackList):
 """Ejercicio 7"""
 
 def countConnections(Grafo):
-    #cantidad de componentes conexas
-    arist=[] #lista de aristas 
+    #Implementa la operación cantidad de componentes conexas
+    verts=[]
     for each in Grafo:
-        for i in range(0,len(each)):
-            if i != 0:
-                if (each[0],each[i]) not in arist and (each[i],each[0]) not in arist:
-                    arist.append((each[0],each[i]))
-    L=make_set(Grafo)#coloco cada vertice en una lista propia
-    for i in range(0,len(arist)):#comparo y realizo la coleccion de conjuntos uniendolos cuando una arista los une 
-        n1=arist[i][0]
-        n2=arist[i][1]
-        flag=False
-        for x in range(0,len(L)):
-            for j in range(0,len(L[x])):
-                if n1==L[x][j]:
-                    index1=x
-                    flag=True
-                if n2==L[x][j]:
-                    index2=x
-                    aux=L[index2]
-                    flag=True
-        if index1!=index2 and flag is True:
-            L[index1].append(aux)
-            if aux in L:
-                L.remove(aux)
-    print(L)
-    return len(L)
+        verts.append(each[0])
+    #veo los vertices
+    visited=[]
+    components=[]
+    #bfs asume que no son conexos lo que me sirve para ver los que estan conectados
+    for each in verts:
+        if each not in visited:
+            L=BFS(Grafo,each)
+            for each in L:
+                visited.append(each)
+            components.append(L)
+    print(components)
+    return len(components)
     
 """Ejercicio 8"""
 
@@ -366,12 +355,6 @@ def bestRoad(graph, start, goal):
 
 """Extras"""
 
-def make_set(graph):
-    L=[]
-    for i in range(0,len(graph)):
-        L.append([])
-        L[i].append(graph[i][0])
-    return L
 
 def DFS_Visit_TREE(G,V,grayList,whitelist,blackList,Aristas):
     #saco de los blancos y los pongo en gris
